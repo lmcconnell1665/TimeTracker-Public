@@ -1,0 +1,44 @@
+name: Continuous Deployment
+
+# When action will run
+on: push
+
+jobs:
+  # single job called "build and deploy"
+  build-and-deploy:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+        
+      # Sets up hugo with the version specified
+      - name: Setup-hugo
+        uses: peaceiris/actions-hugo@v2
+        with:
+          hugo-version: '0.72.0'
+          
+      # Builds the hugo website
+      - name: Build-site
+        run: |
+          make clean
+          hugo
+          
+      # Grants action AWS permissions for s3 bucket
+      - name: Configure-AWS-credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.MCCONNELL_WEB_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.MCCONNELL_WEB_AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+          
+      # Deploys the hugo site
+      - name: Deploy-site
+        run: hugo deploy
+    
+      # Logs the completed deployment
+      - name: Post-deployment
+        run: echo Build completed on `date`
