@@ -19,10 +19,6 @@ def main():
 
     auth_token = fetch_token(parameters)
 
-    # activities = fetch_activities(auth_token)
-    # activities_dict = json.loads(activities)
-    # print(activities_dict)
-
     data = fetch_data(auth_token)
     data_dict = json.loads(data)
     print(data_dict)
@@ -45,24 +41,6 @@ def fetch_token(account_parameters):
     token = (response.text.encode('utf8'))
 
     return token.decode('UTF-8')
-
-def fetch_activities(token):
-    """
-    gets all of the activities for the account.
-    """
-
-    bearer_token = json.loads(token)
-
-    url = "https://api.timeular.com/api/v3/activities"
-
-    payload = {}
-    headers = {
-        'Authorization': 'Bearer ' + str(bearer_token['token'])
-    }
-
-    response = requests.request("GET", url, headers=headers, data=payload)
-
-    return response.text.encode('utf8')
 
 def fetch_data(token):
     """
