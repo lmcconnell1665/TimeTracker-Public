@@ -4,8 +4,8 @@ Connected to the Timeular API and returns data
 Luke McConnell
 """
 import json
+from datetime import datetime, timedelta
 import requests
-
 
 def main():
     """
@@ -19,9 +19,13 @@ def main():
 
     auth_token = fetch_token(parameters)
 
-    activities = fetch_activities(auth_token)
-    activities_dict = json.loads(activities)
-    print(activities_dict)
+    # activities = fetch_activities(auth_token)
+    # activities_dict = json.loads(activities)
+    # print(activities_dict)
+
+    data = fetch_data(auth_token)
+    data_dict = json.loads(data)
+    print(data_dict)
 
 def fetch_token(account_parameters):
     """
@@ -53,6 +57,32 @@ def fetch_activities(token):
 
     payload = {}
     headers = {
+        'Authorization': 'Bearer ' + str(bearer_token['token'])
+    }
+
+    response = requests.request("GET", url, headers=headers, data=payload)
+
+    return response.text.encode('utf8')
+
+def fetch_data(token):
+    """
+    gets all of the data for the last 90 days
+    """
+
+    bearer_token = json.loads(token)
+
+    today = datetime.now()
+    ninty_days_ago = today - timedelta(days=90)
+    new_format = "%Y-%m-%dT%H:%M:%S.%f"
+
+    now = today.strftime(new_format)[:-3]
+    ago = ninty_days_ago.strftime(new_format)[:-3]
+
+    url = 'https://api.timeular.com/api/v3/report/data/' + ago + '/' + now
+
+    payload = {}
+    headers = {
+        'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + str(bearer_token['token'])
     }
 
