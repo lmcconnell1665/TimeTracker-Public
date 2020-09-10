@@ -29,6 +29,13 @@ jobs:
         run: |
           make lint
 
+      - name: Test with pytest
+        env:
+          API_KEY: ${{ secrets.TIMEULAR_API_KEY }}
+          API_SECRET: ${{ secrets.TIMEULAR_API_SECRET }}
+        run: |
+          make test
+
       # Logs the completed deployment
       - name: Log successful build
         run: echo Build completed on `date`
