@@ -2,7 +2,6 @@
 Unit tests for the main function
 """
 
-import pytest
 import main
 
 def test_main_output():
