@@ -42,8 +42,13 @@ def main():
 
     # Insert tags into entry notes
 
-    # Return dataframes
-    return fct_entries, dim_activities, dim_tags
+    # Save dataframe as csv
+    date = datetime.now()
+    
+    fct_entries.to_csv("fct_entries_"+str(date)+".csv", index=False)
+    dim_activities.to_csv("dim_activities"+str(date)+".csv", index=False)
+    dim_tags.to_csv("dim_tags"+str(date)+".csv", index=False)
+    print ("done")
 
 def fetch_token(account_parameters):
     """
@@ -182,7 +187,6 @@ def generate_tags_df(payload):
     data_frame = data_frame[['id', 'label', 'key']]
 
     return data_frame
-
 
 if __name__ == "__main__":
     main()
