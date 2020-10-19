@@ -45,9 +45,9 @@ def main():
     # Save dataframe as csv
     date = datetime.now()
     
-    fct_entries.to_csv("fct_entries_"+str(date)+".csv", index=False)
-    dim_activities.to_csv("dim_activities"+str(date)+".csv", index=False)
-    dim_tags.to_csv("dim_tags"+str(date)+".csv", index=False)
+    fct_entries.to_csv("fct_entries.csv", index=False)
+    # dim_activities.to_csv("dim_activities"+str(date)+".csv", index=False)
+    # dim_tags.to_csv("dim_tags"+str(date)+".csv", index=False)
     print ("done")
 
 def fetch_token(account_parameters):
@@ -79,7 +79,7 @@ def fetch_data(token, which_data):
     if which_data == 'fctEntries':
 
         today = datetime.now()
-        ninty_days_ago = today - timedelta(days=90)
+        ninty_days_ago = today - timedelta(days=120)
         new_format = "%Y-%m-%dT%H:%M:%S.%f"
 
         now = today.strftime(new_format)[:-3]

@@ -1,53 +1,67 @@
+import dash
 import dash_core_components as dcc
 import dash_html_components as html
-from dash.dependencies import Input, Output
+from dash.dependencies import Input, Output, State
 import plotly.graph_objs as go
 from django_plotly_dash import DjangoDash
+import pandas as pd
+import os
+import datetime as dt
+import numpy as np
 
-external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+app = DjangoDash('SimpleExample')
 
-app = DjangoDash('SimpleExample', external_stylesheets=external_stylesheets)
+app.css.append_css({'external_url': '/static/css/sb-admin-2.css'})
 
+os.chdir('/Users/lukemcconnell/Desktop/dev/TimeTracker/')
+data = pd.read_csv('fct_entries.csv')
 
-app.layout = html.Div([
-    html.H1('Square Root Slider Graph'),
-    dcc.Graph(id='slider-graph', animate=True, style={"backgroundColor": "#1a2d46", 'color': '#ffffff'}),
-    dcc.Slider(
-        id='slider-updatemode',
-        marks={i: '{}'.format(i) for i in range(20)},
-        max=20,
-        value=2,
-        step=1,
-        updatemode='drag',
-    ),
-])
+data['duration'] = pd.to_timedelta(data['duration'])
+data['date'] = pd.to_datetime(data['startTime'].values).strftime('%a, %b %d %Y')
 
+data_clean = data.groupby(['date'], as_index=False).agg({'duration': np.sum})
+
+data_clean['date'] = pd.to_datetime(data_clean['date'])
+data_clean['duration'] = pd.to_timedelta(data_clean['duration'])
+
+data_clean = data_clean.sort_values(by='date')
+
+app.layout = html.Div(
+    [
+        html.Div([
+                'How many days in the past do you want to see?', #Dropdown instructions 
+                dcc.Dropdown(
+                    id = 'Dropdown', 
+                    options=[
+                        {'label': '7 days', 'value': 7},
+                        {'label': '14 days', 'value': 14},
+                        {'label': '30 days', 'value': 30}
+                    ],
+                value=14,
+                clearable=False
+                )], style={'width': '30%', 
+                    'display': 'inline-block', 
+                    'marginBottom': 20, 
+                    'marginTop': 20,
+                    'marginLeft': 30}), #closes dropdown html.Div
+
+        dcc.Graph(id='graph1') # this is the graph we add
+    ]
+)
 
 @app.callback(
-               Output('slider-graph', 'figure'),
-              [Input('slider-updatemode', 'value')])
-def display_value(value):
-
-
-    x = []
-    for i in range(value):
-        x.append(i)
-
-    y = []
-    for i in range(value):
-        y.append(i*i)
-
-    graph = go.Scatter(
-        x=x,
-        y=y,
-        name='Manipulate Graph'
-    )
-    layout = go.Layout(
-        paper_bgcolor='#27293d',
-        plot_bgcolor='rgba(0,0,0,0)',
-        xaxis=dict(range=[min(x), max(x)]),
-        yaxis=dict(range=[min(y), max(y)]),
-        font=dict(color='white'),
-
-    )
-    return {'data': [graph], 'layout': layout}
+    Output(component_id='graph1', component_property='figure'),
+    [Input(component_id = 'Dropdown', component_property = 'value')]
+)
+def update_output(input_value):
+    random_x = data_clean.iloc[len(data_clean)-input_value:len(data_clean),0]
+    random_y = data_clean['duration'].dt.seconds/60/60
+    
+    figure = {
+        'data': [
+            {'x':random_x, 'y':random_y, 'type':'bar', 'name': 'Series1'}
+        ],
+        'layout': {
+        }
+    }
+    return figure
