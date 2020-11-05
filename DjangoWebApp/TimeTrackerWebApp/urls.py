@@ -15,9 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include 
+from register import views as v
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('home.urls')),
-    path('django_plotly_dash/', include('django_plotly_dash.urls')),
+    path('', include('home.urls')), #homepage
+    path('register/', v.register, name='register'), #registration page
+    path('', include('django.contrib.auth.urls')), #login/logout pages
+    path('django_plotly_dash/', include('django_plotly_dash.urls')), #dash plots
 ]

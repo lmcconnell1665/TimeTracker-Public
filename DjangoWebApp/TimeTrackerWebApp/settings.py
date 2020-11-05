@@ -42,9 +42,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # L.McConnell configured
+    'home.apps.HomeConfig',
+    'register.apps.RegisterConfig',
+
+    # crispy forms
+    'crispy_forms',
 
     # dash plotly configured
-    'home.apps.HomeConfig',
     'django_plotly_dash.apps.DjangoPlotlyDashConfig',
     'channels',
     'channels_redis',
@@ -170,3 +174,8 @@ STATICFILES_DIRS = [
 ]
 
 X_FRAME_OPTIONS = 'SAMEORIGIN'
+
+CRISPY_TEMPLATE_PACK='bootstrap4'
+
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
