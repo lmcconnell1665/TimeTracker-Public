@@ -5,7 +5,7 @@
       {% load plotly_dash %}
 
       <!-- Greeting Card -->
-      <div class="col-xl-3 col-md-6 mb-4">
+      <div class="mb-4">
           <div class="card border-left-warning shadow h-100 py-2">
             <div class="card-body">
               <div class="row no-gutters align-items-center">
@@ -23,7 +23,7 @@
       </div>
 
       <!-- Dropdown Card - Time Worked Per Day -->
-      <div class="card shadow mb-4">
+      <div class="card shadow mb-4 m-4">
       <!-- Card Header - Dropdown -->
       <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
           <h6 class="m-0 font-weight-bold text-primary">Time Worked Per Day</h6>
@@ -43,11 +43,11 @@
       <!-- Card Body -->
       <div class="card-body">
 
-          <div class="{% plotly_class name='SimpleExample'%} card" style="height: 90%; width: 100%">
-              {% plotly_app name='SimpleExample' ratio=0.65 %}
+          <div class="{% plotly_class name='SimpleExample'%} card">
+              {% plotly_app name='SimpleExample' ratio=0.6 %}
           </div>
       </div>
-      </div>
+    </div>
 
   <br>
 

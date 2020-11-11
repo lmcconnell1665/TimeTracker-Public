@@ -15,12 +15,20 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include 
-from register import views as v
+from register import views as register_views
+from django.contrib.auth import views as auth_views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('home.urls')), #homepage
-    path('register/', v.register, name='register'), #registration page
-    path('', include('django.contrib.auth.urls')), #login/logout pages
+    path('register/', register_views.register, name='register'), #registration page
+    path('login/', auth_views.LoginView.as_view(template_name='register/login.html'), name='login'), #login page
+    path('logout/', auth_views.LogoutView.as_view(template_name='register/logout.html'), name='logout'), #logout page
+    path('profile/', register_views.profile, name='profile'), #profile page
     path('django_plotly_dash/', include('django_plotly_dash.urls')), #dash plots
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

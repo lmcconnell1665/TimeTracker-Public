@@ -50,6 +50,7 @@ msgpack==1.0.0
 numpy==1.19.1
 packaging==20.4
 pandas==1.1.2
+Pillow==8.0.1
 plotly==4.11.0
 pluggy==0.13.1
 psycopg2==2.8.6

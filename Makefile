@@ -11,7 +11,12 @@ test:
 
 lint:
 	#hadolint Dockerfile 
-	pylint --disable=C0301 main.py
+	#main python files
+	pylint --disable=C0301,W0612 main.py
 	pylint test.py
+
+	#django python files
+	pylint --disable=C0415 DjangoWebApp/manage.py
+
 
 all: install lint test

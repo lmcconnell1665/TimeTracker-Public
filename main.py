@@ -44,7 +44,7 @@ def main():
 
     # Save dataframe as csv
     date = datetime.now()
-    
+
     fct_entries.to_csv("fct_entries.csv", index=False)
     # dim_activities.to_csv("dim_activities"+str(date)+".csv", index=False)
     # dim_tags.to_csv("dim_tags"+str(date)+".csv", index=False)

@@ -5,9 +5,11 @@ from django.contrib.auth.models import User
 
 #Setup custom user attributes for registration form
 class RegisterForm(UserCreationForm):
+    first_name = forms.CharField(max_length=30, required=True, label='First Name', help_text='')
+    last_name = forms.CharField(max_length=30, required=True, label='Last Name', help_text='')
     email = forms.EmailField()
     
     #defining that we want to save to the user database
     class Meta:
         model = User
-        fields = ["username", "email", "password1", "password2"]
+        fields = ["first_name", "last_name", "username", "email", "password1", "password2"]
