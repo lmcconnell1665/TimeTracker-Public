@@ -49,7 +49,7 @@ def main():
     # dim_activities.to_csv("dim_activities"+str(date)+".csv", index=False)
     # dim_tags.to_csv("dim_tags"+str(date)+".csv", index=False)
     print ("done")
-    return ('Done')
+    return 'Done'
 
 def fetch_token(account_parameters):
     """
