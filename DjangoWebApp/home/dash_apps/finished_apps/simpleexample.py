@@ -19,7 +19,7 @@ data = pd.read_csv('fct_entries.csv')
 data['duration'] = pd.to_timedelta(data['duration'])
 data['date'] = pd.to_datetime(data['startTime'].values).strftime('%a, %b %d %Y')
 
-data_clean = data.groupby(['date'], as_index=False).agg({'duration': np.sum})
+data_clean = data.groupby(['date'], as_index=False).agg({'duration': np.sum, 'polarity': np.sum})
 
 data_clean['date'] = pd.to_datetime(data_clean['date'])
 data_clean['duration'] = pd.to_timedelta(data_clean['duration'])
@@ -56,10 +56,11 @@ app.layout = html.Div(
 def update_output(input_value):
     random_x = data_clean.iloc[len(data_clean)-input_value:len(data_clean),0]
     random_y = data_clean['duration'].dt.seconds/60/60
+    hover = data_clean['polarity']
     
     figure = {
         'data': [
-            {'x':random_x, 'y':random_y, 'type':'bar', 'name': 'Series1'}
+            {'x':random_x, 'y':random_y, 'type':'bar', 'name': 'Series1', 'hovertext': hover}
         ],
         'layout': {
         }
